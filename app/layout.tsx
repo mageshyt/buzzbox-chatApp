@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter, Open_Sans } from "next/font/google";
-import "./globals.css";
+
 import { ThemeProvider } from "@/components/providers/theme-providers";
+import { ModalProvider } from "@/components/providers/modal-provider";
+
 import { cn } from "@/lib/utils";
+
+import "./globals.css";
 import "@uploadthing/react/styles.css";
+
 const font = Open_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -27,6 +32,7 @@ export default function RootLayout({
             enableSystem={false}
             storageKey="buzzbox-theme"
           >
+            <ModalProvider />
             {children}
           </ThemeProvider>
         </body>

@@ -1,15 +1,15 @@
 export interface Profile {
-  name: String;
-  id: String;
-  profileId: String;
-  imageUrl: String;
+  name: string;
+  id: string;
+  profileId: string;
+  imageUrl: string;
 }
 
 export interface Server {
-  name: String;
-  id: String;
-  profileId: String;
-  imageUrl: String;
+  name: string;
+  id: string;
+  profileId: string;
+  imageUrl: string;
   profile: Profile[];
-  inviteCode: String;
+  inviteCode: string;
 }

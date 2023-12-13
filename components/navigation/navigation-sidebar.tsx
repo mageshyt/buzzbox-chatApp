@@ -3,11 +3,14 @@ import React from "react";
 
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ModeToggle } from "@/components/mode-toggle";
 
 import { initialProfile } from "@/lib/initial.profile";
 import serverService from "@/services/server.service";
 import NavigationAction from "./navigation-action";
 import Image from "next/image";
+import NavigationItem from "./navigation-item";
+import { UserButton } from "@clerk/nextjs";
 
 const NavigationSidebar = async () => {
   const profile = await initialProfile();
@@ -21,19 +24,31 @@ const NavigationSidebar = async () => {
 
       <Separator className="h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto" />
 
-      <ScrollArea className="flex-1 w-full mb-4">
+      <ScrollArea className="flex-1 w-full">
         {servers.map((server, idx) => (
-          <div key={idx}>
-            <Image
-              src={server.imageUrl as string}
-              alt={server.name as string}
-              width={40}
-              height={40}
-              className="rounded-md "
+          <div key={server.id} className="mb-4">
+            <NavigationItem
+              id={server.id}
+              name={server.name}
+              imageUrl={server.imageUrl}
             />
           </div>
         ))}
       </ScrollArea>
+
+      <div className="flex flex-col items-center pb-3 mt-auto gap-y-4">
+        {/* Theme switch  */}
+        <ModeToggle />
+        {/* user bnt */}
+        <UserButton
+          afterSignOutUrl="/"
+          appearance={{
+            elements: {
+              avatarBox: "h-[48px] w-[48px]",
+            },
+          }}
+        />
+      </div>
     </div>
   );
 };
