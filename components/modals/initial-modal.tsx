@@ -23,7 +23,9 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
-
+import { FileUpload } from "@/components/file-upload";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 const formScheme = z.object({
   name: z
     .string()
@@ -53,14 +55,27 @@ export const InitialModal = () => {
 
   const isLoading = form.formState.isSubmitting;
 
+  const router = useRouter();
   const onSubmit = async (values: z.infer<typeof formScheme>) => {
-    console.log(values);
+    try {
+      await axios.post("/api/servers", values);
+
+      // reset the form
+      form.reset();
+
+      router.refresh();
+
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (!isMounted) return null;
   return (
     <Dialog open>
       <DialogContent className="p-0 overflow-hidden text-black bg-white">
+        {/* Header */}
         <DialogHeader className="px-6 pt-8">
           {/* Title */}
           <DialogTitle className="text-2xl font-bold text-center">
@@ -80,7 +95,23 @@ export const InitialModal = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="p-4">
               {/* image upload */}
-              {/* TODO */}
+              <div className="flex items-center justify-center">
+                <FormField
+                  control={form.control}
+                  name="imageUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <FileUpload
+                          endpoint="messageFile"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
               {/* formField */}
               <FormField
                 control={form.control}
