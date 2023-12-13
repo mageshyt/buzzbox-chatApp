@@ -8,10 +8,19 @@ export const initialProfile = async () => {
     if (!user) {
       redirectToSignIn();
     }
-    user?.id as string;
+
     const profile = await pb
       .collection("profile")
-      .getFirstListItem(`profileId="${user?.id}"`);
+      .getFirstListItem(`profileId="${user?.id}"`, {
+        signal: undefined,
+      })
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        console.log(err);
+        return null;
+      });
 
     if (profile) return profile;
     // if no profile, create one
