@@ -1,7 +1,7 @@
 import pb from "@/lib/client";
 import { currentProfile } from "@/lib/current-profile";
+import serverService from "@/services/server.service";
 import { NextResponse } from "next/server";
-import { v4 as uuid } from "uuid";
 
 export async function POST(req: Request) {
   try {
@@ -11,45 +11,11 @@ export async function POST(req: Request) {
 
     if (!profile) throw new NextResponse("Unauthorized", { status: 401 });
 
-    const server = await pb.collection("server").create({
-      name,
-      imageUrl,
-      profileId: profile.id,
-      inviteCode: uuid(),
-      profile: profile.id,
-    });
+    const server = await serverService.createServer(name, imageUrl, profile.id);
 
     console.log("[SERVER POST ]", server);
 
-    // create general channel
-    const channel = await pb.collection("channel").create({
-      name: "general",
-      serverId: server.id,
-      profileId: profile.id,
-      profile: profile.id,
-      server: server.id,
-      channelType: "TEXT",
-    });
-
-    console.log("[SERVER POST CHANNEL]", channel);
-
-    // create member
-    const member = await pb.collection("member").create({
-      profileId: profile.id,
-      serverId: server.id,
-      profile: profile.id,
-      server: server.id,
-      role: "ADMIN",
-    });
-
-    console.log("[SERVER POST MEMBER]", member);
-
-    // update the server
-    const result = await pb.collection("server").update(server.id, {
-      "members+": member.id,
-      "channels+": channel.id,
-    });
-    return new NextResponse(JSON.stringify(result), {
+    return new NextResponse(JSON.stringify(server), {
       headers: {
         "content-type": "application/json",
       },

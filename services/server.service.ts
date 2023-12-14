@@ -1,5 +1,6 @@
-import pb from "@/lib/client";
+import pb, { client } from "@/lib/client";
 import { Server } from "@/typings/typing";
+import { v4 as uuid } from "uuid";
 
 class ServerService {
   private static instance: ServerService | null = null;
@@ -15,15 +16,28 @@ class ServerService {
     console.log("Service created 🤖");
   }
 
-  //   get the user servers
+  //* get the user servers
 
   public async getServers(userId: string): Promise<Server[]> {
     try {
-      const response: any = await pb.collection("Server").getFullList({
-        filter: `profileId="${userId}"`,
+      const servers = await client.server.findMany({
+        where: {
+          members: {
+            some: {
+              profileId: userId,
+            },
+          },
+        },
+        include: {
+          members: {
+            include: {
+              profile: true,
+            },
+          },
+        },
       });
 
-      return response as Server[];
+      return servers;
     } catch (err) {
       console.log(err);
 
@@ -31,26 +45,66 @@ class ServerService {
     }
   }
 
-  // get server details
-  public async getServer(serverId: string, memberId: string): Promise<Server> {
+  //* get server details
+  public async getServer(serverId: string, memberId: string) {
     try {
-      //  only the members of the server can get the server details
-      const response: any = await pb
-        .collection("Server")
-        .getOne(serverId, {
-          expand: "members",
-        })
-        .then((res) => res)
-        .catch((err) => {
-          console.log(err);
-          return null;
-        });
+      const server = await client.server.findFirst({
+        where: {
+          id: serverId,
+          members: {
+            some: {
+              profileId: memberId,
+            },
+          },
+        },
+      });
 
-      return response as Server;
+      return server;
     } catch (err) {
       console.log(err);
 
       throw new Error("Error getting server");
+    }
+  }
+
+  //* create a server
+
+  public async createServer(
+    name: string,
+    imageUrl: string,
+    profileId: string
+  ): Promise<Server> {
+    try {
+      const server = await client.server.create({
+        data: {
+          name,
+          imageUrl,
+          profileId,
+          inviteCode: uuid(),
+          channels: {
+            create: [
+              {
+                name: "general",
+                type: "TEXT",
+                profileId,
+              },
+            ],
+          },
+          members: {
+            create: [
+              {
+                profileId,
+                role: "ADMIN",
+              },
+            ],
+          },
+        },
+      });
+
+      return server;
+    } catch (err) {
+      console.log(err);
+      throw new Error("Error creating server");
     }
   }
 }

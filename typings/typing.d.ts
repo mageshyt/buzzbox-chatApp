@@ -10,6 +10,6 @@ export interface Server {
   id: string;
   profileId: string;
   imageUrl: string;
-  profile: Profile[];
+  profile?: Profile;
   inviteCode: string;
 }
