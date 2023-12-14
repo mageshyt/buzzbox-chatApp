@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import React from "react";
 import { redirectToSignIn } from "@clerk/nextjs";
+import toast, { Toaster } from "react-hot-toast";
 
 import ServerSidebar from "@/components/server/server-sidebar";
 
@@ -19,15 +20,6 @@ const ServerIdLayout = async ({
   if (!profile) {
     return redirectToSignIn();
   }
-
-  const server = await serverService.getServer(params.serverId, profile.id);
-
-  if (!server) {
-    // toast.error("Access Denied");
-    return redirect("/");
-  }
-
-  console.log(server);
 
   return (
     <div className="h-full">

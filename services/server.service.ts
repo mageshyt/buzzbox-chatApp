@@ -46,7 +46,7 @@ class ServerService {
   }
 
   //* get server details
-  public async getServer(serverId: string, memberId: string) {
+  public async getServerDetail(serverId: string, memberId: string) {
     try {
       const server = await client.server.findFirst({
         where: {
@@ -54,6 +54,21 @@ class ServerService {
           members: {
             some: {
               profileId: memberId,
+            },
+          },
+        },
+        include: {
+          channels: {
+            orderBy: {
+              createdAt: "asc",
+            },
+          },
+          members: {
+            include: {
+              profile: true,
+            },
+            orderBy: {
+              role: "asc",
             },
           },
         },

@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 import "./globals.css";
 import "@uploadthing/react/styles.css";
+import { Toaster } from "react-hot-toast";
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default function RootLayout({
             enableSystem={false}
             storageKey="buzzbox-theme"
           >
+            <Toaster />
             <ModalProvider />
 
             {children}
