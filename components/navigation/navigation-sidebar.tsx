@@ -1,19 +1,20 @@
 import { redirect } from "next/navigation";
 import React from "react";
 
+import { UserButton } from "@clerk/nextjs";
+
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ModeToggle } from "@/components/mode-toggle";
 
-import { initialProfile } from "@/lib/initial.profile";
 import serverService from "@/services/server.service";
+import { currentProfile } from "@/lib/current-profile";
+
 import NavigationAction from "./navigation-action";
-import Image from "next/image";
 import NavigationItem from "./navigation-item";
-import { UserButton } from "@clerk/nextjs";
 
 const NavigationSidebar = async () => {
-  const profile = await initialProfile();
+  const profile = await currentProfile();
 
   const servers = await serverService.getServers(profile?.id as string);
 

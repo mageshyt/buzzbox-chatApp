@@ -17,7 +17,7 @@ class ServerService {
 
   //   get the user servers
 
-  public async getServers(userId: String): Promise<Server[]> {
+  public async getServers(userId: string): Promise<Server[]> {
     try {
       const response: any = await pb.collection("Server").getFullList({
         filter: `profileId="${userId}"`,
@@ -28,6 +28,29 @@ class ServerService {
       console.log(err);
 
       throw new Error("Error getting servers");
+    }
+  }
+
+  // get server details
+  public async getServer(serverId: string, memberId: string): Promise<Server> {
+    try {
+      //  only the members of the server can get the server details
+      const response: any = await pb
+        .collection("Server")
+        .getOne(serverId, {
+          expand: "members",
+        })
+        .then((res) => res)
+        .catch((err) => {
+          console.log(err);
+          return null;
+        });
+
+      return response as Server;
+    } catch (err) {
+      console.log(err);
+
+      throw new Error("Error getting server");
     }
   }
 }

@@ -33,6 +33,7 @@ export default function RootLayout({
             storageKey="buzzbox-theme"
           >
             <ModalProvider />
+
             {children}
           </ThemeProvider>
         </body>

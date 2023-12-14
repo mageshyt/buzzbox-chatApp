@@ -1,5 +1,6 @@
 import { currentUser, redirectToSignIn } from "@clerk/nextjs";
-import pb from "./client";
+import pb, { client } from "./client";
+import { currentProfile } from "./current-profile";
 
 export const initialProfile = async () => {
   try {
@@ -9,26 +10,19 @@ export const initialProfile = async () => {
       redirectToSignIn();
     }
 
-    const profile = await pb
-      .collection("profile")
-      .getFirstListItem(`profileId="${user?.id}"`, {
-        signal: undefined,
-      })
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        console.log(err);
-        return null;
-      });
+    const profile = await client.profile.findUnique({
+      where: { userId: user?.id },
+    });
 
     if (profile) return profile;
     // if no profile, create one
-    const newUser = await pb.collection("profile").create({
-      profileId: user?.id,
-      name: `${user?.firstName} ${user?.lastName}`,
-      email: user?.emailAddresses[0].emailAddress,
-      imageUrl: user?.imageUrl,
+    const newUser = await client.profile.create({
+      data: {
+        userId: user?.id as string,
+        name: `${user?.firstName} ${user?.lastName}`,
+        email: user?.emailAddresses[0].emailAddress as string,
+        imageUrl: user?.imageUrl as string,
+      },
     });
 
     return newUser;
