@@ -1,5 +1,5 @@
 import pb, { client } from "@/lib/client";
-import { Server } from "@/typings/typing";
+import { Server } from "@prisma/client";
 import { v4 as uuid } from "uuid";
 
 class ServerService {
