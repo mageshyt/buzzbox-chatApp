@@ -81,7 +81,10 @@ const ServerHeader: FC<ServerHeaderProps> = ({ server, role }) => {
         {/* manage member */}
 
         {isAdmin && (
-          <DropdownMenuItem className={style.menuItem}>
+          <DropdownMenuItem
+            onClick={() => openModal("manageMember", { server })}
+            className={style.menuItem}
+          >
             Manage Member
             <Users className={style.icon} />
           </DropdownMenuItem>

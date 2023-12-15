@@ -1,5 +1,5 @@
 import pb, { client } from "@/lib/client";
-import { Server } from "@prisma/client";
+import { MemberRole, Server } from "@prisma/client";
 import { v4 as uuid } from "uuid";
 
 class ServerService {
@@ -200,6 +200,90 @@ class ServerService {
       console.log(err);
 
       throw new Error("Error updating server");
+    }
+  }
+
+  // ! change the user role
+
+  public async changeRole(
+    serverId: string,
+    memberId: string,
+    profileId: string,
+    role: MemberRole
+  ) {
+    console.log(serverId, memberId, profileId, role);
+
+    try {
+      const server = await client.server.update({
+        where: {
+          id: serverId,
+          profileId: profileId,
+        },
+        data: {
+          members: {
+            update: {
+              where: {
+                id: memberId,
+                profileId: {
+                  not: profileId,
+                },
+              },
+              data: {
+                role,
+              },
+            },
+          },
+        },
+        include: {
+          members: {
+            include: {
+              profile: true,
+            },
+            orderBy: {
+              role: "asc",
+            },
+          },
+        },
+      });
+
+      return server;
+    } catch (err) {
+      console.log(err);
+
+      throw new Error("Error changing role");
+    }
+  }
+
+  // ! kick the user
+
+  public async kickUser(serverId: string, memberId: string, profileId: string) {
+    try {
+      const server = await client.server.update({
+        where: {
+          id: serverId,
+          profileId: profileId,
+        },
+        data: {
+          members: {
+            delete: {
+              id: memberId,
+            },
+          },
+        },
+
+        include: {
+          members: {
+            include: {
+              profile: true,
+            },
+          },
+        },
+      });
+      return server;
+    } catch (err) {
+      console.log(err);
+
+      throw new Error("Error kicking user");
     }
   }
 }
