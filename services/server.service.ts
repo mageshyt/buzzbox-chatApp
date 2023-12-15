@@ -125,13 +125,15 @@ class ServerService {
 
   // ! generate invite code
 
-  public async generateInviteCode(serverId: string,profileId:string): Promise<Server> {
+  public async generateInviteCode(
+    serverId: string,
+    profileId: string
+  ): Promise<Server> {
     try {
       const server = await client.server.update({
         where: {
           id: serverId,
-          profileId:profileId,
-           
+          profileId: profileId,
         },
         data: {
           inviteCode: uuid(),
@@ -143,6 +145,33 @@ class ServerService {
       console.log(err);
 
       throw new Error("Error generating invite code");
+    }
+  }
+
+  // ! join server
+
+  public async joinServer(inviteCode: string, profileId: string) {
+    try {
+      const server = await client.server.update({
+        where: {
+          inviteCode: inviteCode,
+        },
+        data: {
+          members: {
+            create: [
+              {
+                profileId: profileId,
+              },
+            ],
+          },
+        },
+      });
+
+      return server;
+    } catch (err) {
+      console.log(err);
+
+      throw new Error("Error joining server");
     }
   }
 }
