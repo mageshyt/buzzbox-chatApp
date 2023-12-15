@@ -122,6 +122,29 @@ class ServerService {
       throw new Error("Error creating server");
     }
   }
+
+  // ! generate invite code
+
+  public async generateInviteCode(serverId: string,profileId:string): Promise<Server> {
+    try {
+      const server = await client.server.update({
+        where: {
+          id: serverId,
+          profileId:profileId,
+           
+        },
+        data: {
+          inviteCode: uuid(),
+        },
+      });
+
+      return server;
+    } catch (err) {
+      console.log(err);
+
+      throw new Error("Error generating invite code");
+    }
+  }
 }
 
 export default ServerService.getInstance();

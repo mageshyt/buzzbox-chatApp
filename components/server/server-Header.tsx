@@ -1,4 +1,9 @@
+"use client";
 import React, { FC } from "react";
+
+import { cn } from "@/lib/utils";
+import { ServerWithMembersAndProfile } from "@/typings/typing";
+import { MemberRole } from "@prisma/client";
 
 import {
   DropdownMenu,
@@ -8,11 +13,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { ServerWithMembersAndProfile } from "@/typings/typing";
-import { MemberRole } from "@prisma/client";
 import {
   ChevronDown,
-  Delete,
   LogOut,
   PlusCircle,
   Settings,
@@ -20,7 +22,8 @@ import {
   UserPlus,
   Users,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useModal } from "@/hooks/use-modal";
+import { useOrigin } from "@/hooks/use-origin";
 
 interface ServerHeaderProps {
   server: ServerWithMembersAndProfile;
@@ -33,10 +36,13 @@ const ServerHeader: FC<ServerHeaderProps> = ({ server, role }) => {
     menuItem: "px-3 py-2 text-sm  cursor-pointer ",
   };
 
+  const { openModal } = useModal();
+
+
   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
 
-  console.log("role", role);
+
 
   return (
     <DropdownMenu>
@@ -52,6 +58,7 @@ const ServerHeader: FC<ServerHeaderProps> = ({ server, role }) => {
 
         {isModerator && (
           <DropdownMenuItem
+            onClick={() => openModal("invite", { server })}
             className={cn(
               style.menuItem,
               "text-indigo-600 dark:text-indigo-400"
