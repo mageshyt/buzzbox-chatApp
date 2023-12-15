@@ -38,11 +38,8 @@ const ServerHeader: FC<ServerHeaderProps> = ({ server, role }) => {
 
   const { openModal } = useModal();
 
-
   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
-
-
 
   return (
     <DropdownMenu>
@@ -72,7 +69,10 @@ const ServerHeader: FC<ServerHeaderProps> = ({ server, role }) => {
         {/* server settings */}
 
         {isAdmin && (
-          <DropdownMenuItem className={style.menuItem}>
+          <DropdownMenuItem
+            onClick={() => openModal("editServer", { server })}
+            className={style.menuItem}
+          >
             Server Settings
             <Settings className={style.icon} />
           </DropdownMenuItem>

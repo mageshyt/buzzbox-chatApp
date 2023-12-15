@@ -16,7 +16,7 @@ class ServerService {
     console.log("Service created 🤖");
   }
 
-  //* get the user servers
+  //! get the user servers
 
   public async getServers(userId: string): Promise<Server[]> {
     try {
@@ -45,7 +45,7 @@ class ServerService {
     }
   }
 
-  //* get server details
+  //! get server details
   public async getServerDetail(serverId: string, memberId: string) {
     try {
       const server = await client.server.findFirst({
@@ -82,7 +82,7 @@ class ServerService {
     }
   }
 
-  //* create a server
+  //! create a server
 
   public async createServer(
     name: string,
@@ -172,6 +172,34 @@ class ServerService {
       console.log(err);
 
       throw new Error("Error joining server");
+    }
+  }
+
+  //! update the server
+
+  public async updateServer(
+    serverId: string,
+    profileId: string,
+    name: string,
+    imageUrl: string
+  ) {
+    try {
+      const server = await client.server.update({
+        where: {
+          id: serverId,
+          profileId: profileId,
+        },
+        data: {
+          name,
+          imageUrl,
+        },
+      });
+
+      return server;
+    } catch (err) {
+      console.log(err);
+
+      throw new Error("Error updating server");
     }
   }
 }
