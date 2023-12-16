@@ -24,6 +24,8 @@ import {
 } from "lucide-react";
 import { useModal } from "@/hooks/use-modal";
 import { useOrigin } from "@/hooks/use-origin";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface ServerHeaderProps {
   server: ServerWithMembersAndProfile;
@@ -40,6 +42,21 @@ const ServerHeader: FC<ServerHeaderProps> = ({ server, role }) => {
 
   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
+
+  const router = useRouter();
+
+  const handleLeaveServer = async () => {
+    try {
+      const res = await axios.patch(`/api/servers/${server.id}/leave`);
+
+      router.push("/");
+      router.refresh();
+
+      console.log(res);
+    } catch (error) {
+      console.log("👉 Error", error);
+    }
+  };
 
   return (
     <DropdownMenu>
@@ -116,6 +133,7 @@ const ServerHeader: FC<ServerHeaderProps> = ({ server, role }) => {
         {/* leave server [guest , mod] can leave */}
         {!isAdmin && (
           <DropdownMenuItem
+            onClick={handleLeaveServer}
             className={cn(style.menuItem, "text-rose-600 dark:text-red-400")}
           >
             Leave Server

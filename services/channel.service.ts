@@ -24,16 +24,30 @@ class ChannelService {
     name: string
   ) {
     try {
-      const channel = await client.channel.create({
+      const server = await client.server.update({
+        where: {
+          id: serverId,
+          members: {
+            some: {
+              profileId,
+              role: {
+                in: [MemberRole.ADMIN, MemberRole.MODERATOR],
+              },
+            },
+          },
+        },
         data: {
-          profileId,
-          name,
-          serverId,
-          type,
+          channels: {
+            create: {
+              name,
+              type,
+              profileId,
+            },
+          },
         },
       });
 
-      return channel;
+      return server;
     } catch (err) {
       console.log(err);
 

@@ -123,6 +123,22 @@ class ServerService {
     }
   }
 
+  //! delete a server
+  public async deleteServer(serverId: string, profileId: string) {
+    try {
+      const server = await client.server.delete({
+        where: {
+          id: serverId,
+          profileId: profileId,
+        },
+      });
+
+      return server;
+    } catch (err) {
+      console.log(err);
+      throw new Error("Error deleting server");
+    }
+  }
   // ! generate invite code
 
   public async generateInviteCode(
@@ -175,6 +191,37 @@ class ServerService {
     }
   }
 
+  // ! leave server
+  public async leaveServer(serverId: string, profileId: string) {
+    try {
+      const server = await client.server.update({
+        where: {
+          id: serverId,
+          profileId: {
+            not: profileId,
+          },
+          members: {
+            some: {
+              profileId: profileId,
+            },
+          },
+        },
+        data: {
+          members: {
+            deleteMany: {
+              profileId: profileId,
+            },
+          },
+        },
+      });
+
+      return server;
+    } catch (err) {
+      console.log(err);
+
+      throw new Error("Error leaving server");
+    }
+  }
   //! update the server
 
   public async updateServer(

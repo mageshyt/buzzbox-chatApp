@@ -17,6 +17,11 @@ export async function POST(req: Request) {
 
     if (!profile) throw new NextResponse("Unauthorized", { status: 401 });
 
+    if (name === "general") {
+      return new NextResponse("Name cannot to be general", { status: 400 });
+    }
+    
+
     const channel = await channelService.createChannel(
       serverId,
       profile.id,
