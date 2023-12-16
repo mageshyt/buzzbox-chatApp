@@ -51,7 +51,7 @@ const roleIconMap = {
 export const ManageMemberModal = () => {
   const router = useRouter();
   const style = {
-    content: "overflow-hidden text-black bg-white",
+    content: "overflow-hidden text-black bg-white ",
     title: "text-2xl font-bold text-center",
     label:
       "uppercase text-sm font-semibold text-zinc-500 dark:text-secondary/70",
@@ -140,7 +140,7 @@ export const ManageMemberModal = () => {
             server?.members.map((member) => (
               <div
                 key={member.id}
-                className="flex items-center m-2 mb-4 gap-x-2"
+                className="flex  items-center m-2 mb-4 gap-x-2"
               >
                 <UserAvatar
                   imageUrl={member?.profile.imageUrl}

@@ -8,9 +8,9 @@ interface UserAvatarProps {
   alt: string;
   className?: string;
 }
-const UserAvatar: FC<UserAvatarProps> = ({ imageUrl, alt ,className}) => {
+const UserAvatar: FC<UserAvatarProps> = ({ imageUrl, alt, className }) => {
   return (
-    <Avatar className={cn("h-7 w-7 md:w-10 md:h-10",className)}>
+    <Avatar className={cn("h-7 w-7 md:w-10 md:h-10", className)}>
       <AvatarImage src={imageUrl} alt={alt} />
     </Avatar>
   );
