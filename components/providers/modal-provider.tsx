@@ -6,6 +6,7 @@ import { CreateServerModal } from "@/components/modals/create-server-modal";
 import { InviteModal } from "../modals/invite-modal";
 import { EditServerModal } from "../modals/edit-server-modal";
 import { ManageMemberModal } from "../modals/manage-member-modal";
+import { CreateChannelModal } from "../modals/create-channel-modal";
 
 export const ModalProvider = () => {
   // Hydration Fix
@@ -22,7 +23,8 @@ export const ModalProvider = () => {
       <CreateServerModal />
       <InviteModal />
       <EditServerModal />
-      <ManageMemberModal/>
+      <ManageMemberModal />
+      <CreateChannelModal />
     </>
   );
 };

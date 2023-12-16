@@ -92,7 +92,10 @@ const ServerHeader: FC<ServerHeaderProps> = ({ server, role }) => {
 
         {/* create channel */}
         {isAdmin && (
-          <DropdownMenuItem className={style.menuItem}>
+          <DropdownMenuItem
+            onClick={() => openModal("createChannel", { server })}
+            className={style.menuItem}
+          >
             Create Channel
             <PlusCircle className={style.icon} />
           </DropdownMenuItem>
