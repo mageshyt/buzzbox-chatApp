@@ -1,6 +1,5 @@
-import pb, { client } from "@/lib/client";
+import { client } from "@/lib/client";
 import { ChannelType, MemberRole, Server } from "@prisma/client";
-import { v4 as uuid } from "uuid";
 
 class ChannelService {
   private static instance: ChannelService | null = null;
@@ -52,6 +51,70 @@ class ChannelService {
       console.log(err);
 
       throw new Error("Error creating channel");
+    }
+  }
+
+  // ! update a channel
+
+  public async updateChannel(
+    channelId: string,
+    profileId: string,
+    name: string,
+    type: ChannelType
+  ) {
+    try {
+      const channel = await client.channel.update({
+        where: {
+          id: channelId,
+          profileId,
+        },
+        data: {
+          name,
+          type,
+        },
+      });
+
+      return channel;
+    } catch (err) {
+      console.log(err);
+
+      throw new Error("Error updating channel");
+    }
+  }
+
+  // ! delete a channel
+  public async deleteChannel(
+    channelId: string,
+    serverId: string,
+    profileId: string
+  ) {
+    try {
+      const server = await client.server.update({
+        where: {
+          id: serverId,
+          members: {
+            some: {
+              profileId,
+              role: {
+                in: [MemberRole.ADMIN, MemberRole.MODERATOR],
+              },
+            },
+          },
+        },
+        data: {
+          channels: {
+            delete: {
+              id: channelId,
+            },
+          },
+        },
+      });
+
+      return server;
+    } catch (err) {
+      console.log(err);
+
+      throw new Error("Error deleting channel");
     }
   }
 }

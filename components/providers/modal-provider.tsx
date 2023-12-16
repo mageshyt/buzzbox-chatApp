@@ -9,6 +9,8 @@ import { ManageMemberModal } from "../modals/manage-member-modal";
 import { CreateChannelModal } from "../modals/create-channel-modal";
 import { DeleteServerModal } from "../modals/delete-server-modal";
 import { LeaveServerModal } from "../modals/leave-server-modal";
+import { EditChannelModal } from "../modals/edit-channel-modal";
+import { DeleteChannelModal } from "../modals/delete-channel-modal";
 
 export const ModalProvider = () => {
   // Hydration Fix
@@ -29,6 +31,8 @@ export const ModalProvider = () => {
       <CreateChannelModal />
       <DeleteServerModal />
       <LeaveServerModal />
+      <EditChannelModal />
+      <DeleteChannelModal />
     </>
   );
 };

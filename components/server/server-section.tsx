@@ -31,11 +31,14 @@ const ServerSection: FC<ServerSectionProps> = ({
   return (
     <div className={style.wrapper}>
       <p className={style.label}>{label}</p>
+      {/* create channel */}
       {role !== MemberRole.GUEST &&
         (sectionType === "channel" ? (
           <ActionTooltip label="create channel" side="top">
             <button
-              onClick={() => openModal("createChannel", { server })}
+              onClick={() =>
+                openModal("createChannel", { server, channelType })
+              }
               className={style.button}
             >
               <Plus className="w-4 h-4" />

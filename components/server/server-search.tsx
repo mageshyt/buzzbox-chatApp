@@ -63,7 +63,6 @@ const ServerSearch: FC<ServerSearchProps> = ({ data }) => {
     id: string;
     type: "channel" | "member";
   }) => {
-    console.log("👉 id", id);
     setOpen(false);
     if (type === "member") {
       return router.push(`/servers/${params.serverId}/members/${id}`);

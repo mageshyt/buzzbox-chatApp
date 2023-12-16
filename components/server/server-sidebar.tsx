@@ -46,8 +46,6 @@ const ServerSidebar: FC<ServerSidebarProps> = async ({ serverId }) => {
     return redirect("/");
   }
 
-  console.log("👉 server", server);
-
   const textChannel = server?.channels?.filter(
     (channel) => channel.type === "TEXT"
   );
@@ -139,7 +137,7 @@ const ServerSidebar: FC<ServerSidebarProps> = async ({ serverId }) => {
         {!!voiceChannel?.length && (
           <div className="mb-2">
             <ServerSection
-              channelType={ChannelType.TEXT}
+              channelType={ChannelType.AUDIO}
               label="Voice channels"
               sectionType="channel"
               role={role}
@@ -159,7 +157,7 @@ const ServerSidebar: FC<ServerSidebarProps> = async ({ serverId }) => {
         {!!voiceChannel?.length && (
           <div className="mb-2">
             <ServerSection
-              channelType={ChannelType.TEXT}
+              channelType={ChannelType.VIDEO}
               label="Video channels"
               sectionType="channel"
               role={role}

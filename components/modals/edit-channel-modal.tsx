@@ -48,7 +48,7 @@ const formScheme = z.object({
   type: z.nativeEnum(ChannelType),
 });
 
-export const CreateChannelModal = () => {
+export const EditChannelModal = () => {
   const style = {
     label: "text-xs font-bold text-zinc-500 dark:text-secondary/70",
     input:
@@ -57,41 +57,40 @@ export const CreateChannelModal = () => {
 
   const { isOpen, onClose, type, data } = useModal();
 
-  const { server, channelType } = data;
+  const { channel, server } = data;
 
   const router = useRouter();
 
-  const isModelOpen = isOpen && type === "createChannel";
+  const isModelOpen = isOpen && type === "editChannel";
 
   const form = useForm({
     defaultValues: {
       name: "",
-      type: channelType || ChannelType.TEXT,
+      type: channel?.type || ChannelType.TEXT,
     },
     resolver: zodResolver(formScheme),
   });
 
   useEffect(() => {
-    if (channelType) {
-      form.setValue("type", channelType);
-    } else {
-      form.setValue("type", ChannelType.TEXT);
+    if (channel) {
+      form.setValue("name", channel.name);
+      form.setValue("type", channel.type);
     }
-  }, [channelType]);
+  }, [channel, form]);
 
   const isLoading = form.formState.isSubmitting;
   //! handle submit
   const onSubmit = async (values: z.infer<typeof formScheme>) => {
     try {
       const url = qs.stringifyUrl({
-        url: "/api/channels",
+        url: `/api/channels/${channel?.id}`,
         query: {
           serverId: server?.id,
           ...values,
         },
       });
-      console.log(values, url);
-      await axios.post(url, values);
+
+      await axios.patch(url, values);
 
       // reset the form
       form.reset();
@@ -119,7 +118,7 @@ export const CreateChannelModal = () => {
         <DialogHeader className="px-6 pt-8">
           {/* Title */}
           <DialogTitle className="text-2xl font-bold text-center">
-            Create a Channel
+            Edit Channel
           </DialogTitle>
         </DialogHeader>
 
