@@ -1,5 +1,5 @@
 import { client } from "@/lib/client";
-import { ChannelType, MemberRole, Server } from "@prisma/client";
+import { Channel, ChannelType, MemberRole, Server } from "@prisma/client";
 
 class ChannelService {
   private static instance: ChannelService | null = null;
@@ -115,6 +115,35 @@ class ChannelService {
       console.log(err);
 
       throw new Error("Error deleting channel");
+    }
+  }
+
+  // ! get channel details
+
+  public async getChannelDetails(
+    channelId: string,
+    serverId: string,
+    profileId: string
+  ) {
+    try {
+      const channel = await client.channel.findUnique({
+        where: {
+          id: channelId,
+        },
+        include:{}
+      });
+
+      const member = await client.member.findFirst({
+        where: {
+          serverId: serverId,
+          profileId,
+        },
+      });
+
+      return [channel, member];
+    } catch (error) {
+      console.log("CLIENT SERVICE ERROR", error);
+      throw new Error("Error in getting channel");
     }
   }
 }

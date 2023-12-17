@@ -31,9 +31,13 @@ const ServerMember: FC<ServerMemberProps> = ({ member, server }) => {
 
   const icon = roleIconsMap[member.role];
 
+  const handleClick = () => {
+    router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
+  };
+
   return (
     <button
-      onClick={() => router.push(`/channels/${params.serverId}/${member.id}`)}
+      onClick={handleClick}
       className={cn(
         style.wrapper,
         params?.memberId === member.id && "bg-zinc-700/20 dark:bg-zinc-700"
