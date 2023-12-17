@@ -2,7 +2,7 @@ import { Hash } from "lucide-react";
 import React, { FC } from "react";
 import MobileToggle from "@/components/mobile-toggle";
 import Image from "next/image";
-import UserAvatar from "../user-avatar";
+import { SocketIndicatorBadge } from "../socket-indicator-badge";
 
 interface ChatHeaderProps {
   serverId: string;
@@ -42,6 +42,12 @@ const ChatHeader: FC<ChatHeaderProps> = ({
       )}
 
       <p className={style.label}>{name}</p>
+
+      {/* socket connection */}
+
+      <div className="ml-auto flex items-center">
+        <SocketIndicatorBadge />
+      </div>
     </div>
   );
 };
