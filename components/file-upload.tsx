@@ -43,7 +43,7 @@ export const FileUpload: FC<FileUploadProps> = ({
         >
           {value.split("/").pop()}
         </a>
-
+ 
         <Button
           className="absolute w-6 h-6 p-1 text-white rounded-full -right-1 -top-1 hover:bg-rose-500/90 bg-rose-500"
           onClick={() => onChange("")}

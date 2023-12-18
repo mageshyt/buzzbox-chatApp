@@ -4,11 +4,12 @@ import React, { FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Plus, Smile } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Input } from "../ui/input";
 import axios from "axios";
 import qs from "query-string";
 import { useModal } from "@/hooks/use-modal";
+import { EmojiPicker } from "@/components/emoji-picker";
 
 interface ChatInputProps {
   apiUrl: string;
@@ -48,6 +49,8 @@ const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, type }) => {
       });
 
       await axios.post(url, data);
+
+      form.reset();
     } catch (error) {
       console.log(error);
     }
@@ -66,8 +69,8 @@ const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, type }) => {
                   {/* add media modal */}
                   <button
                     onClick={() => openModal("messageFile", { apiUrl, query })}
-                    type="submit"
                     className={style.button}
+                    type="button"
                   >
                     <Plus className="text-white dark:text-[#31338]" />
                   </button>
@@ -82,7 +85,12 @@ const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, type }) => {
                   />
                   {/* emoji modal */}
                   <div className="absolute right-8 top-7">
-                    <Smile />
+                    {/* <Smile /> */}
+                    <EmojiPicker
+                      onChange={(emoji) => {
+                        form.setValue("content", field.value + emoji);
+                      }}
+                    />
                   </div>
                 </div>
               </FormControl>
