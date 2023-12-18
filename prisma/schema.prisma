@@ -65,7 +65,7 @@ model Member {
   Messages              Message[]
   coversationsInitiated Conversation[]  @relation("MemberOne")
   coversationsReceived  Conversation[]  @relation("MemberTwo")
-  DirectMessages         DirectMessage[]
+  DirectMessages        DirectMessage[]
 
   @@index([profileId])
   @@index([serverId])
@@ -97,9 +97,9 @@ model Channel {
 }
 
 model Message {
-  id      String @id @default(uuid())
-  content String @db.Text
-  fileUrl String @db.Text
+  id      String  @id @default(uuid())
+  content String  @db.Text
+  fileUrl String? @db.Text
 
   memberId  String
   member    Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
@@ -123,7 +123,7 @@ model Conversation {
 
   memberTwoId String
 
-  memberTwo     Member          @relation("MemberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
+  memberTwo      Member          @relation("MemberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
   DirectMessages DirectMessage[]
 
   @@unique([memberOneId, memberTwoId])
@@ -132,9 +132,9 @@ model Conversation {
 }
 
 model DirectMessage {
-  id      String @id @default(uuid())
-  content String @db.Text
-  fileUrl String @db.Text
+  id      String  @id @default(uuid())
+  content String  @db.Text
+  fileUrl String? @db.Text
 
   memberId String
   member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
