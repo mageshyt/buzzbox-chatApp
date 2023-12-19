@@ -1,10 +1,11 @@
 import ChatHeader from "@/components/chat/chat-header";
 import ChatInput from "@/components/chat/chat-input";
+import { ChatMessages } from "@/components/chat/chat-messages";
 import MobileToggle from "@/components/mobile-toggle";
 import { currentProfile } from "@/lib/current-profile";
 import channelService from "@/services/channel.service";
 import { redirectToSignIn } from "@clerk/nextjs";
-import { Channel } from "@prisma/client";
+import { Channel, Member } from "@prisma/client";
 import { redirect } from "next/navigation";
 import React, { FC } from "react";
 
@@ -38,7 +39,21 @@ const ChannelPage: FC<ChannelPageProps> = async ({ params }) => {
         serverId={params.serverId}
       />
 
-      <div className="flex-1">Future Messages</div>
+      {/* <div className="flex-1">Future Messages</div> */}
+      <ChatMessages
+        member={member as Member}
+        name={(channel as Channel).name}
+        chatId={channel.id}
+        apiUrl="/api/messages"
+        socketUrl="/api/socket/messages"
+        socketQuery={{
+          serverId: params.serverId,
+          channelId: channel.id,
+        }}
+        paramKey="channelId"
+        paramValue={channel.id}
+        type="channel"
+      />
 
       <ChatInput
         type="channel"

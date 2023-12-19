@@ -34,6 +34,8 @@ class MemberService {
       return null;
     }
   }
+
+
 }
 
 export default MemberService.getInstance();

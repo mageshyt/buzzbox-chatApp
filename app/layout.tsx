@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-import {  Open_Sans } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 
 import { ThemeProvider } from "@/components/providers/theme-providers";
 import { ModalProvider } from "@/components/providers/modal-provider";
@@ -11,6 +11,7 @@ import "./globals.css";
 import "@uploadthing/react/styles.css";
 import { Toaster } from "react-hot-toast";
 import { SocketProvider } from "@/components/providers/socket-provider";
+import QueryProvider from "@/components/providers/query-provider";
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -35,10 +36,12 @@ export default function RootLayout({
             storageKey="buzzbox-theme"
           >
             <SocketProvider>
-              <Toaster />
-              <ModalProvider />
+              <QueryProvider>
+                <Toaster />
+                <ModalProvider />
 
-              {children}
+                {children}
+              </QueryProvider>
             </SocketProvider>
           </ThemeProvider>
         </body>

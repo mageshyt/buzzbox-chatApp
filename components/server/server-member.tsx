@@ -12,7 +12,7 @@ interface ServerMemberProps {
   server: Server;
 }
 
-const roleIconsMap = {
+export const roleIconsMap = {
   [MemberRole.ADMIN]: <ShieldAlert className="ml-auto h-4 w-4 text-red-400" />,
   [MemberRole.MODERATOR]: (
     <ShieldCheck className="ml-auto h-4 w-4 text-indigo-400" />

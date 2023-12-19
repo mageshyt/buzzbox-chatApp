@@ -89,11 +89,11 @@ export default async function handler(
       },
     });
 
-    console.log("[MESSAGE POST]", message);
+    // console.log("[MESSAGE POST]", message);
 
     // Emit message to all members of the server
 
-    const channelKey = `server:${server.id}:channel:${channel.id}`;
+    const channelKey = `chat:${channelId}:messages`;
 
     req?.socket?.server?.io?.emit(channelKey, message);
 

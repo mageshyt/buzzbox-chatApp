@@ -10,6 +10,7 @@ import axios from "axios";
 import qs from "query-string";
 import { useModal } from "@/hooks/use-modal";
 import { EmojiPicker } from "@/components/emoji-picker";
+import { useRouter } from "next/navigation";
 
 interface ChatInputProps {
   apiUrl: string;
@@ -31,6 +32,7 @@ const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, type }) => {
       "bg-zinc-200/90 dark:bg-zinc-700/70 border-none   focus-visible:ring-0 focus-visible:ring-offset-0 px-14 py-6",
   };
 
+  const router = useRouter();
   const { openModal } = useModal();
   const form = useForm<z.infer<typeof fontSchema>>({
     defaultValues: {
@@ -51,6 +53,7 @@ const ChatInput: FC<ChatInputProps> = ({ apiUrl, query, name, type }) => {
       await axios.post(url, data);
 
       form.reset();
+      router.refresh();
     } catch (error) {
       console.log(error);
     }
