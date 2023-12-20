@@ -90,7 +90,7 @@ export const CreateChannelModal = () => {
           ...values,
         },
       });
-      console.log(values, url);
+      // console.log(values, url);
       await axios.post(url, values);
 
       // reset the form

@@ -1,5 +1,5 @@
 import { currentProfile } from "@/lib/current-profile";
-import channelService from "@/services/channel.service";
+import channelService from "@/services/channel-service";
 import { NextResponse } from "next/server";
 export async function DELETE(
   req: Request,
@@ -21,7 +21,7 @@ export async function DELETE(
       profile.id
     );
 
-    console.log("[SERVER DELETE]", server);
+    // console.log("[SERVER DELETE]", server);
 
     return new NextResponse(JSON.stringify(server), {
       headers: {
@@ -56,7 +56,7 @@ export async function PATCH(
       type
     );
 
-    console.log("[CHANNEL PATCH]", server);
+    // console.log("[CHANNEL PATCH]", server);
 
     return new NextResponse(JSON.stringify(server), {
       headers: {

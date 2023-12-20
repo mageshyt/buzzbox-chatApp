@@ -12,9 +12,7 @@ class ServerService {
     return this.instance;
   }
 
-  private constructor() {
-    console.log("Service created 🤖");
-  }
+
 
   //! get the user servers
 
@@ -335,4 +333,5 @@ class ServerService {
   }
 }
 
-export default ServerService.getInstance();
+const serverService = ServerService.getInstance();
+export default serverService;

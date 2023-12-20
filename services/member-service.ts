@@ -11,10 +11,6 @@ class MemberService {
     return MemberService.instance;
   }
 
-  private constructor() {
-    console.log("Member Service created  ✅");
-  }
-
   async getMember(memberId: string, serverId: string) {
     try {
       const member = await client.member.findFirst({
@@ -34,8 +30,8 @@ class MemberService {
       return null;
     }
   }
-
-
 }
 
-export default MemberService.getInstance();
+const memberService = MemberService.getInstance();
+
+export default memberService;

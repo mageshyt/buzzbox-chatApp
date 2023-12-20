@@ -1,5 +1,5 @@
 import { currentProfile } from "@/lib/current-profile";
-import channelService from "@/services/channel.service";
+import channelService from "@/services/channel-service";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
       name
     );
 
-    console.log("[CHANNEL POST ]", channel);
+    // console.log("[CHANNEL POST ]", channel);
 
     return new NextResponse(JSON.stringify(channel));
   } catch (error) {

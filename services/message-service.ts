@@ -1,5 +1,4 @@
 import { client } from "@/lib/client";
-import { Message } from "@prisma/client";
 
 class MessageService {
   private static instance: MessageService;
@@ -46,7 +45,7 @@ class MessageService {
 
   // get message with cursor
 
-  public async getMessagesWithCursor(cursor: string, channelId: string) {
+  public async getMessagesWithCursor(cursor: string, channelId: string){
     try {
       const messages = await client.message.findMany({
         take: this.MESSAGES_BATCH,
@@ -157,4 +156,6 @@ class MessageService {
   }
 }
 
-export default MessageService.getInstance();
+const messageService = MessageService.getInstance();
+
+export default messageService;

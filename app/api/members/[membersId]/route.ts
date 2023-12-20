@@ -1,5 +1,5 @@
 import { currentProfile } from "@/lib/current-profile";
-import serverService from "@/services/server.service";
+import serverService from "@/services/server-service";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(req: Request, params: { membersId: string }) {
@@ -26,7 +26,7 @@ export async function PATCH(req: Request, params: { membersId: string }) {
     if (!memberId) {
       return new NextResponse("MemberId Missing ", { status: 400 });
     }
-    console.log("[MEMBER ROLE PATCH]", params);
+    // console.log("[MEMBER ROLE PATCH]", params);
     const res = await serverService.changeRole(
       serverId,
       memberId,

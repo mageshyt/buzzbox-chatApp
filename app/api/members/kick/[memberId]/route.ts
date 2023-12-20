@@ -1,5 +1,5 @@
 import { currentProfile } from "@/lib/current-profile";
-import serverService from "@/services/server.service";
+import serverService from "@/services/server-service";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req: Request) {

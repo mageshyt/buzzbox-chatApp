@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import { Message } from "@prisma/client";
-
 import { currentProfile } from "@/lib/current-profile";
-import { client } from "@/lib/client";
 import messageService from "@/services/message-service";
 import { MessageWithMemberProfile } from "@/typings/typing";
+import { DirectMessage, Member, Profile } from "@prisma/client";
+import directMessageService from "@/services/direct-message-service";
 
 const MESSAGES_BATCH = 10;
 
@@ -14,22 +13,27 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
 
     const cursor = searchParams.get("cursor");
-    const channelId = searchParams.get("channelId");
+    const conversationId = searchParams.get("conversationId");
 
     if (!profile) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    if (!channelId) {
-      return new NextResponse("Channel ID missing", { status: 400 });
+    if (!conversationId) {
+      return new NextResponse("conversationId ID missing", { status: 400 });
     }
 
-    let messages: MessageWithMemberProfile[] | null = [];
+    let messages: DirectMessage[] | null = [];
 
     if (cursor) {
-      messages = await messageService.getMessagesWithCursor(cursor, channelId);
+      messages = await directMessageService.getMessagesWithCursor(
+        cursor,
+        conversationId
+      );
     } else {
-      messages = await messageService.getMessagesWithoutCursor(channelId);
+      messages = await directMessageService.getMessagesWithoutCursor(
+        conversationId
+      );
     }
 
     if (!messages) {
@@ -47,7 +51,7 @@ export async function GET(req: Request) {
       nextCursor,
     });
   } catch (error) {
-    console.log("[MESSAGES_GET]", error);
+    console.log("[DIRECT_MESSAGES_GET]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

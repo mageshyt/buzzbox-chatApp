@@ -132,6 +132,7 @@ export const ChatItem: FC<ChatItemProps> = ({
         query: socketQuery,
       });
 
+      console.log(url);
       await axios.patch(url, values);
 
       form.reset();

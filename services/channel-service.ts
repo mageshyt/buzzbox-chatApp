@@ -3,16 +3,18 @@ import { Channel, ChannelType, MemberRole, Server } from "@prisma/client";
 
 class ChannelService {
   private static instance: ChannelService | null = null;
+ 
   // Singleton pattern to ensure only one instance of the service
   static getInstance(): ChannelService {
     if (!this.instance) {
+ 
       this.instance = new ChannelService();
     }
     return this.instance;
   }
 
   private constructor() {
-    console.log("ChannelService created 🤖");
+    // console.log("ChannelService created 🤖",);
   }
 
   //   ! create a channel
@@ -130,7 +132,7 @@ class ChannelService {
         where: {
           id: channelId,
         },
-        include:{}
+        include: {},
       });
 
       const member = await client.member.findFirst({
@@ -148,4 +150,5 @@ class ChannelService {
   }
 }
 
-export default ChannelService.getInstance();
+const channelService = ChannelService.getInstance();
+export default channelService;

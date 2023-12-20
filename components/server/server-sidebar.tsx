@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { redirect } from "next/navigation";
 
 import { currentProfile } from "@/lib/current-profile";
-import serverService from "@/services/server.service";
+import serverService from "@/services/server-service";
 import { ChannelType, MemberRole } from "@prisma/client";
 
 import { Hash, Mic, ShieldAlert, ShieldCheck, Video } from "lucide-react";
