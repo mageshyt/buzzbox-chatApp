@@ -4,7 +4,7 @@ import { ChatMessages } from "@/components/chat/chat-messages";
 import MobileToggle from "@/components/mobile-toggle";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { currentProfile } from "@/lib/current-profile";
-import channelService from "@/services/channel.service";
+import channelService from "@/services/channel-service";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { Channel, Member } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -42,20 +42,20 @@ const ChannelPage: FC<ChannelPageProps> = async ({ params }) => {
 
       {/* <div className="flex-1">Future Messages</div> */}
       {/* <ScrollArea> */}
-        <ChatMessages
-          member={member as Member}
-          name={(channel as Channel).name}
-          chatId={channel.id}
-          apiUrl="/api/messages"
-          socketUrl="/api/socket/messages"
-          socketQuery={{
-            serverId: params.serverId,
-            channelId: channel.id,
-          }}
-          paramKey="channelId"
-          paramValue={channel.id}
-          type="channel"
-        />
+      <ChatMessages
+        member={member as Member}
+        name={(channel as Channel).name}
+        chatId={channel.id}
+        apiUrl="/api/messages"
+        socketUrl="/api/socket/messages"
+        socketQuery={{
+          serverId: params.serverId,
+          channelId: channel.id,
+        }}
+        paramKey="channelId"
+        paramValue={channel.id}
+        type="channel"
+      />
       {/* </ScrollArea> */}
 
       <ChatInput

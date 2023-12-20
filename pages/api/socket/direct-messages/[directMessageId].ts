@@ -1,8 +1,6 @@
 import { client } from "@/lib/client";
 import { currentProfilePage } from "@/lib/current-profile-pages";
-import channelService from "@/services/channel-service";
-import messageService from "@/services/message-service";
-import serverService from "@/services/server-service";
+import directMessageService from "@/services/direct-message-service";
 import { MemberRole } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -16,41 +14,61 @@ export default async function handler(
   }
   try {
     const profile = await currentProfilePage(req);
-    const { messageId, serverId, channelId } = req.query;
+    const { directMessageId, conversationId } = req.query;
     const { content } = req.body;
 
     // Authentication and validation checks
-    if (!profile || !serverId || !channelId) {
+    if (!profile) {
       return res.status(401).json({ error: "Unauthorized" });
     }
+    const conversation = await client.conversation.findFirst({
+      where: {
+        id: conversationId as string,
+        OR: [
+          {
+            memberOne: {
+              profileId: profile.id,
+            },
+          },
+          {
+            memberTwo: {
+              profileId: profile.id,
+            },
+          },
+        ],
+      },
+      include: {
+        memberOne: {
+          include: {
+            profile: true,
+          },
+        },
+        memberTwo: {
+          include: {
+            profile: true,
+          },
+        },
+      },
+    });
 
-    const server = await serverService.getServerDetail(
-      serverId as string,
-      profile.id
-    );
-
-    if (!server) {
-      return res.status(404).json({ error: "Server not found" });
-    }
-
-    const channel = await channelService.getChannelDetails(
-      channelId as string,
-      serverId as string,
-      profile.id
-    );
-
-    if (!channel) {
-      return res.status(404).json({ error: "Channel not found" });
+    if (!conversation) {
+      return res.status(404).json({ error: "Conversation not found" });
     }
 
     // Check if the user is a member of the server
-    const member = server.members.find((m) => m.profileId === profile.id);
+    const member =
+      conversation.memberOne.profileId === profile.id
+        ? conversation.memberOne
+        : conversation.memberTwo;
 
     if (!member) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    let message = await messageService.getMessage(messageId as string);
+    let message = await directMessageService.getMessage(
+      directMessageId as string,
+      conversationId as string
+    );
 
     if (!message || message.deleted) {
       return res.status(404).json({ error: "Message not found" });
@@ -72,14 +90,19 @@ export default async function handler(
         return res.status(400).json({ error: "Missing content" });
       }
 
-      message = await messageService.editMessage(messageId as string, content);
+      message = await directMessageService.editMessage(
+        directMessageId as string,
+        content
+      );
     }
     if (req.method === "DELETE") {
-      message = await messageService.deleteMessage(messageId as string);
+      message = await directMessageService.deleteMessage(
+        directMessageId as string
+      );
     }
 
     // Emit update event to socket
-    const updateKey = `chat:${channelId}:messages:update`;
+    const updateKey = `chat:${directMessageId}:messages:update`;
     // @ts-ignore
     res?.socket?.server?.io?.emit(updateKey, message);
     return res.status(200).json(message);

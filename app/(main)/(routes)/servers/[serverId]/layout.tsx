@@ -6,7 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import ServerSidebar from "@/components/server/server-sidebar";
 
 import { currentProfile } from "@/lib/current-profile";
-import serverService from "@/services/server.service";
+import serverService from "@/services/server-service";
 
 const ServerIdLayout = async ({
   children,

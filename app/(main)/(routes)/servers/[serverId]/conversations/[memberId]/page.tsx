@@ -1,9 +1,12 @@
 import ChatHeader from "@/components/chat/chat-header";
+import ChatInput from "@/components/chat/chat-input";
+import { ChatMessages } from "@/components/chat/chat-messages";
 import { client } from "@/lib/client";
 import { currentProfile } from "@/lib/current-profile";
-import { conversationService } from "@/services/conversation.service";
-import memberService from "@/services/member.service";
+import { conversationService } from "@/services/conversation-service";
+import memberService from "@/services/member-service";
 import { redirectToSignIn } from "@clerk/nextjs";
+import { Member } from "@prisma/client";
 import { redirect } from "next/navigation";
 import React, { FC } from "react";
 interface MemberIdPageProps {
@@ -19,7 +22,10 @@ const MemberIdPage: FC<MemberIdPageProps> = async ({
 
   if (!profile) return redirectToSignIn();
 
-  const currentMember = await memberService.getMember(profile.id, serverId);
+  const currentMember: Member | null = await memberService.getMember(
+    profile.id,
+    serverId
+  );
   if (!currentMember) return redirect("/");
 
   const conversation = await conversationService.getOrCreateConversation(
@@ -48,6 +54,28 @@ const MemberIdPage: FC<MemberIdPageProps> = async ({
         serverId={serverId}
         imageUrl={otherMember.profile.imageUrl}
         name={otherMember.profile.name}
+      />
+      <ChatMessages
+        member={currentMember}
+        name={otherMember.profile.name}
+        chatId={conversation.id}
+        type="conversation"
+        apiUrl="/api/direct-messages"
+        paramKey="conversationId"
+        paramValue={conversation.id}
+        socketUrl="/api/socket/direct-messages"
+        socketQuery={{
+          conversationId: conversation.id,
+        }}
+      />
+
+      <ChatInput
+        name={otherMember.profile.name}
+        type="conversation"
+        apiUrl="/api/socket/direct-messages"
+        query={{
+          conversationId: conversation.id,
+        }}
       />
     </div>
   );

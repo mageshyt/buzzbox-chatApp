@@ -1,6 +1,6 @@
 import { client } from "@/lib/client";
 import { currentProfile } from "@/lib/current-profile";
-import serverService from "@/services/server.service";
+import serverService from "@/services/server-service";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
@@ -33,7 +33,6 @@ const InviteCodePage: FC<InviteCodePageProps> = async ({ params }) => {
     },
   });
 
-  console.log("👉 EXISTING", existingServer);
 
   if (existingServer) {
     // redirect to the server
@@ -45,7 +44,7 @@ const InviteCodePage: FC<InviteCodePageProps> = async ({ params }) => {
 
   const server = await serverService.joinServer(params.inviteCode, profile.id);
 
-  console.log("👉 JOIN SERVER", server);
+  // console.log("👉 JOIN SERVER", server);
 
   if (server) {
     return redirect(`/servers/${server.id}`);
