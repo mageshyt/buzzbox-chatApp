@@ -46,6 +46,7 @@
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
     "tailwind-merge": "^2.1.0",
+    "tailwind-scrollbar": "^3.0.5",
     "tailwindcss-animate": "^1.0.7",
     "timeago-react": "^3.0.6",
     "uploadthing": "^6.1.0",

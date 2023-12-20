@@ -10,6 +10,7 @@ import { MessageWithMemberProfile } from "@/typings/typing";
 import { ChatItem } from "./chat-item";
 import { ChatWelcome } from "./chat-welcome";
 import { useChatSocket } from "@/hooks/use-chat-socket";
+import { useChatScroll } from "@/hooks/use-chat-scroll";
 
 type MessageWithMemberWithProfile = Message & {
   member: Member & {
@@ -40,7 +41,8 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   type,
 }) => {
   const style = {
-    wrapper: "flex-1 flex flex-col py-4 overflow-y-scroll",
+    wrapper:
+      "flex-1 flex flex-col py-4 overflow-y-scroll  scrollbar-thin scrollbar-thumb-zinc-800 ",
     welcomeContainer: "flex-1",
   };
   const queryKey = `chat:${chatId}`;
@@ -61,6 +63,13 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
     });
 
   useChatSocket({ queryKey, addKey, updateKey });
+  useChatScroll({
+    chatRef,
+    bottomRef,
+    loadMore: fetchNextPage,
+    shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
+    count: data?.pages?.[0]?.items?.length ?? 0,
+  });
 
   if (status === "loading") {
     return (
