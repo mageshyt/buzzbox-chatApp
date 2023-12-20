@@ -3,7 +3,7 @@
 import { Member, Message, Profile } from "@prisma/client";
 import React, { ElementRef, FC, Fragment, useRef } from "react";
 import { useChatQuery } from "@/hooks/use-chat-query";
-import { Loader2, ServerCrash } from "lucide-react";
+import { ServerCrash } from "lucide-react";
 
 import { MessageWithMemberProfile } from "@/typings/typing";
 
@@ -11,7 +11,7 @@ import { ChatItem } from "./chat-item";
 import { ChatWelcome } from "./chat-welcome";
 import { useChatSocket } from "@/hooks/use-chat-socket";
 import { useChatScroll } from "@/hooks/use-chat-scroll";
-
+import Loader from "../Loader";
 
 interface ChatMessagesProps {
   name: string;
@@ -49,13 +49,13 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   const chatRef = useRef<ElementRef<"div">>(null);
   const bottomRef = useRef<ElementRef<"div">>(null);
 
-   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
-     useChatQuery({
-       queryKey,
-       apiUrl,
-       paramKey,
-       paramValue,
-     });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
+    useChatQuery({
+      queryKey,
+      apiUrl,
+      paramKey,
+      paramValue,
+    });
 
   useChatSocket({ queryKey, addKey, updateKey });
   useChatScroll({
@@ -69,7 +69,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   if (status === "loading") {
     return (
       <div className="flex flex-col items-center justify-center flex-1">
-        <Loader2 className="w-8 h-8 text-gray-500 animate-spin" />
+        <Loader />
         <span className="mt-2 text-gray-500">Loading Messages...</span>
       </div>
     );
@@ -97,7 +97,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
       {hasNextPage && (
         <div className="flex justify-center">
           {isFetchingNextPage ? (
-            <Loader2 className="w-8 h-8 text-gray-500 animate-spin" />
+            <Loader />
           ) : (
             <button
               onClick={() => fetchNextPage()}

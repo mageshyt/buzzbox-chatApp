@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 
 import "./globals.css";
 import "@uploadthing/react/styles.css";
+import "@livekit/components-styles";
+
 import { Toaster } from "react-hot-toast";
 import { SocketProvider } from "@/components/providers/socket-provider";
 import QueryProvider from "@/components/providers/query-provider";

@@ -1,6 +1,7 @@
 import ChatHeader from "@/components/chat/chat-header";
 import ChatInput from "@/components/chat/chat-input";
 import { ChatMessages } from "@/components/chat/chat-messages";
+import MediaRoom from "@/components/media-room";
 import MobileToggle from "@/components/mobile-toggle";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { currentProfile } from "@/lib/current-profile";
@@ -40,33 +41,42 @@ const ChannelPage: FC<ChannelPageProps> = async ({ params }) => {
         serverId={params.serverId}
       />
 
-      {/* <div className="flex-1">Future Messages</div> */}
-      {/* <ScrollArea> */}
-      <ChatMessages
-        member={member as Member}
-        name={(channel as Channel).name}
-        chatId={channel.id}
-        apiUrl="/api/messages"
-        socketUrl="/api/socket/messages"
-        socketQuery={{
-          serverId: params.serverId,
-          channelId: channel.id,
-        }}
-        paramKey="channelId"
-        paramValue={channel.id}
-        type="channel"
-      />
-      {/* </ScrollArea> */}
+      {(channel as Channel).type === "TEXT" && (
+        <>
+          <ChatMessages
+            member={member as Member}
+            name={(channel as Channel).name}
+            chatId={channel.id}
+            apiUrl="/api/messages"
+            socketUrl="/api/socket/messages"
+            socketQuery={{
+              serverId: params.serverId,
+              channelId: channel.id,
+            }}
+            paramKey="channelId"
+            paramValue={channel.id}
+            type="channel"
+          />
 
-      <ChatInput
-        type="channel"
-        name={(channel as Channel).name}
-        apiUrl="/api/socket/messages"
-        query={{
-          serverId: params.serverId,
-          channelId: params.channelId,
-        }}
-      />
+          <ChatInput
+            type="channel"
+            name={(channel as Channel).name}
+            apiUrl="/api/socket/messages"
+            query={{
+              serverId: params.serverId,
+              channelId: params.channelId,
+            }}
+          />
+        </>
+      )}
+
+      {(channel as Channel).type === "AUDIO" && (
+        <MediaRoom chatId={channel.id} mediaType="audio" />
+      )}
+
+      {(channel as Channel).type === "VIDEO" && (
+        <MediaRoom chatId={channel.id} mediaType="video" />
+      )}
     </div>
   );
 };
