@@ -68,7 +68,6 @@ const MemberIdPage: FC<MemberIdPageProps> = async ({
           conversationId: conversation.id,
         }}
       />
-
       <ChatInput
         name={otherMember.profile.name}
         type="conversation"

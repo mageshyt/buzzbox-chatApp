@@ -73,13 +73,6 @@ export const ChatItem: FC<ChatItemProps> = ({
     },
   });
 
-  useEffect(() => {
-    // Reset form when content changes
-    form.reset({
-      content: content,
-    });
-  }, [content]);
-
   const onMemberClick = () => {
     if (member.id === currentMember.id) return;
     router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
@@ -132,7 +125,7 @@ export const ChatItem: FC<ChatItemProps> = ({
         query: socketQuery,
       });
 
-      console.log(url);
+      // console.log(url);
       await axios.patch(url, values);
 
       form.reset();
@@ -141,6 +134,13 @@ export const ChatItem: FC<ChatItemProps> = ({
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    // Reset form when content changes
+    form.reset({
+      content: content,
+    });
+  }, [content]);
 
   const isLoading = form.formState.isSubmitting;
 

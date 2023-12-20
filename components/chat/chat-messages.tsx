@@ -12,11 +12,6 @@ import { ChatWelcome } from "./chat-welcome";
 import { useChatSocket } from "@/hooks/use-chat-socket";
 import { useChatScroll } from "@/hooks/use-chat-scroll";
 
-type MessageWithMemberWithProfile = Message & {
-  member: Member & {
-    profile: Profile;
-  };
-};
 
 interface ChatMessagesProps {
   name: string;
@@ -54,13 +49,13 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   const chatRef = useRef<ElementRef<"div">>(null);
   const bottomRef = useRef<ElementRef<"div">>(null);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
-    useChatQuery({
-      queryKey,
-      apiUrl,
-      paramKey,
-      paramValue,
-    });
+   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
+     useChatQuery({
+       queryKey,
+       apiUrl,
+       paramKey,
+       paramValue,
+     });
 
   useChatSocket({ queryKey, addKey, updateKey });
   useChatScroll({
@@ -116,7 +111,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
       <div className="flex flex-col-reverse mt-auto">
         {data?.pages.map((page, i) => (
           <Fragment key={i}>
-            {page?.items.map((message: MessageWithMemberProfile) => (
+            {page?.items?.map((message: MessageWithMemberProfile) => (
               <ChatItem
                 {...message}
                 currentMember={member}

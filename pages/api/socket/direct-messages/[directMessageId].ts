@@ -100,9 +100,9 @@ export default async function handler(
         directMessageId as string
       );
     }
-
     // Emit update event to socket
-    const updateKey = `chat:${directMessageId}:messages:update`;
+    const updateKey = `chat:${conversationId}:messages:update`;
+    console.log("[EMMIT] ", updateKey);
     // @ts-ignore
     res?.socket?.server?.io?.emit(updateKey, message);
     return res.status(200).json(message);
