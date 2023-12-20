@@ -19,6 +19,8 @@ import { MessageInfoDisplay } from "./chat-message-info";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { useModal } from "@/hooks/use-modal";
+import { useParams, useRouter } from "next/navigation";
 
 interface ChatItemProps {
   id: string;
@@ -56,6 +58,12 @@ export const ChatItem: FC<ChatItemProps> = ({
 }) => {
   const timestamp = format(new Date(createdAt), DATE_FORMAT);
 
+  const { openModal } = useModal();
+  // Router and Prams
+
+  const router = useRouter();
+  const params = useParams();
+
   //   Form state
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -73,7 +81,8 @@ export const ChatItem: FC<ChatItemProps> = ({
   }, [content]);
 
   const onMemberClick = () => {
-    console.log("TODO: implement member click");
+    if (member.id === currentMember.id) return;
+    router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
   };
 
   const fileType = fileUrl?.split(".").pop();
@@ -99,7 +108,6 @@ export const ChatItem: FC<ChatItemProps> = ({
 
   // Editing and delete state
   const [isEditing, setIsEditing] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   // UseEffect for handle keypress
 
@@ -223,7 +231,6 @@ export const ChatItem: FC<ChatItemProps> = ({
                 <FormField
                   name="content"
                   control={form.control}
-                  disabled={isLoading}
                   render={({ field }) => (
                     <FormItem className="flex-1">
                       <FormControl>
@@ -262,7 +269,16 @@ export const ChatItem: FC<ChatItemProps> = ({
             </ActionTooltip>
           )}
           <ActionTooltip label="Delete">
-            <Trash2 className={style.icon} />
+            <Trash2
+              onClick={() =>
+                openModal("deleteMessage", {
+                  apiUrl: `${socketUrl}/${id}`,
+                  query: socketQuery,
+                  name: name,
+                })
+              }
+              className={style.icon}
+            />
           </ActionTooltip>
         </div>
       )}

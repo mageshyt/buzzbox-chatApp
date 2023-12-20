@@ -12,6 +12,7 @@ import { LeaveServerModal } from "../modals/leave-server-modal";
 import { EditChannelModal } from "../modals/edit-channel-modal";
 import { DeleteChannelModal } from "../modals/delete-channel-modal";
 import { MessageFileUploadModal } from "../modals/message-file-modal";
+import { DeleteMessageModal } from "../modals/delete-message-modal";
 
 export const ModalProvider = () => {
   // Hydration Fix
@@ -35,6 +36,7 @@ export const ModalProvider = () => {
       <EditChannelModal />
       <DeleteChannelModal />
       <MessageFileUploadModal />
+      <DeleteMessageModal />
     </>
   );
 };
