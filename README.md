@@ -9,6 +9,30 @@ Buzz Box is a chat application similar to Discord, offering a wide range of feat
 
 ## Workflow
 ![image](/assets/work-flow%20diagram.png)
+
+1.	Auth
+*	Register using Clerk
+*	Login using Clerk
+*	Logout
+2.	Create Server
+*	User becomes the owner of the server
+*	User can create channels in the server:
+*	Voice Channel
+*	Video Channel
+*	Text Channel
+*	User can invite people to the server
+*	User can promote/depromote people to/from moderator role
+*	Moderators and Admins can:
+*	Delete messages of members in the channel
+*	Kick members out of the server
+*	Admins can:
+*	Delete a channel
+*	Modify a channel
+*	Members can invite users to join their server by sharing a link
+3.	Join Server
+*	Members can join the server by using the link
+4.	Private Message
+*	Users can send private messages to others
 ## Features
 
 - **Real-time Messaging**: Instant messaging with friends and groups.
