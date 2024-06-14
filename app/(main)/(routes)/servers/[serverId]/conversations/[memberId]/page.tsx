@@ -65,7 +65,7 @@ const MemberIdPage: FC<MemberIdPageProps> = async ({
         video && <MediaRoom chatId={conversation.id} mediaType="video" />
       }
       {!video && (
-        <div>
+        <>
           <ChatMessages
             member={currentMember}
             name={otherMember.profile.name}
@@ -87,7 +87,7 @@ const MemberIdPage: FC<MemberIdPageProps> = async ({
               conversationId: conversation.id,
             }}
           />
-        </div>
+        </>
       )}
     </div>
   );

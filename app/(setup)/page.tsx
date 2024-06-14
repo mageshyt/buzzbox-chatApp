@@ -10,7 +10,6 @@ const SetupPage = async () => {
 
   const servers = await serverService.getServers(profile?.id as string);
 
-  // console.log(servers);
   if (servers?.length !== 0) {
     return redirect(`/servers/${servers[0].id}`);
   }
