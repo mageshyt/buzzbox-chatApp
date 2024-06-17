@@ -1,4 +1,4 @@
-import pb, { client } from "@/lib/client";
+import  { client } from "@/lib/client";
 import { MemberRole, Server } from "@prisma/client";
 import { v4 as uuid } from "uuid";
 

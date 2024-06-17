@@ -1,5 +1,5 @@
 import { currentUser, redirectToSignIn } from "@clerk/nextjs";
-import pb, { client } from "./client";
+import { client } from "./client";
 import { currentProfile } from "./current-profile";
 
 export const initialProfile = async () => {
