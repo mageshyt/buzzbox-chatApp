@@ -2,7 +2,6 @@ import { InitialModal } from "@/components/modals/initial-modal";
 import { initialProfile } from "@/lib/initial.profile";
 import serverService from "@/services/server-service";
 import { redirect } from "next/navigation";
-import React from "react";
 
 const SetupPage = async () => {
   const profile = await initialProfile();

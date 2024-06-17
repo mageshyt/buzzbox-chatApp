@@ -1,4 +1,3 @@
-import pb from "@/lib/client";
 import { currentProfile } from "@/lib/current-profile";
 import serverService from "@/services/server-service";
 import { NextResponse } from "next/server";
